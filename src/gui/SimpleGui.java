@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -19,6 +20,7 @@ public class SimpleGui extends JFrame {
 		
 		Controller listener = new Controller(this);
 		
+		setTitle("YY Dict");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		
@@ -36,11 +38,14 @@ public class SimpleGui extends JFrame {
 		searchButton.setBounds(60, 40, getWidth()-120, 30);
 		getContentPane().add(searchButton);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 80, getWidth()-20, 210);
+		getContentPane().add(scrollPane);
+		
 		resultTextArea = new JTextArea();
 		resultTextArea.setText("");
-		resultTextArea.setBounds(10, 80, getWidth()-20, 210);
 		resultTextArea.setLineWrap(true);
-		getContentPane().add(resultTextArea);
+		scrollPane.getViewport().add(resultTextArea);
 	}
 
 	public String getWordToSearch() {
