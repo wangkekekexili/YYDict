@@ -10,7 +10,7 @@ import org.mapdb.DBMaker;
 import cache.Cache;
 import cache.SimpleCache;
 import gui.SimpleGui;
-import util.Dictionary;
+import util.YoudaoDictionary;
 import util.SearchResult;
 
 public class Controller implements ActionListener {
@@ -46,7 +46,7 @@ public class Controller implements ActionListener {
 							onDiskCache.get(wordToSearch));
 					inMemoryCache.put(wordToSearch, result.getContent());
 				} else {
-					result = Dictionary.search(
+					result = YoudaoDictionary.search(
 							frame.getWordToSearch());
 					if (result.hasResult() == true) {
 						inMemoryCache.put(wordToSearch, result.getContent());

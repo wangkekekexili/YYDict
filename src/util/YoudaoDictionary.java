@@ -16,7 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author kewang
  *
  */
-public class Dictionary {
+public class YoudaoDictionary {
 
 	public static final String YOUDAO_DICT_URL = 
 			"http://fanyi.youdao.com/openapi.do?"
