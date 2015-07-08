@@ -17,7 +17,7 @@ public class Controller implements ActionListener {
 	public Controller(SimpleGui frame) {
 		this.frame = frame;
 		inMemoryCache = new SimpleCache();
-		onDiskCache = DBMaker.fileDB(new File("dictionary"))
+		onDiskCache = DBMaker.fileDB(new File("dictionary/dictionary"))
 				.closeOnJvmShutdown()
 				.make()
 				.treeMap("youdao");
