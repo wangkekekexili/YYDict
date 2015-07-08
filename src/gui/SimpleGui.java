@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -15,7 +16,9 @@ import util.SearchResult;
 public class SimpleGui extends JFrame {
 	
 	private JTextField searchTextField;
-	private JTextArea resultTextArea;
+	private JTextArea youdaoResultTextArea;
+	private JTextArea onlineBncResultTextArea;
+	
 	public SimpleGui() {
 		
 		Controller listener = new Controller(this);
@@ -38,27 +41,49 @@ public class SimpleGui extends JFrame {
 		searchButton.setBounds(60, 40, getWidth()-120, 30);
 		getContentPane().add(searchButton);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 80, getWidth()-20, 210);
-		getContentPane().add(scrollPane);
+		JTabbedPane resultPane = new JTabbedPane();
+		resultPane.setBounds(10, 80, getWidth()-20, 210);
+		getContentPane().add(resultPane);
 		
-		resultTextArea = new JTextArea();
-		resultTextArea.setText("");
-		resultTextArea.setLineWrap(true);
-		scrollPane.getViewport().add(resultTextArea);
+		// Youdao
+		JScrollPane youdaoScrollPane = new JScrollPane();
+		youdaoResultTextArea = new JTextArea();
+		youdaoResultTextArea.setText("");
+		youdaoResultTextArea.setLineWrap(true);
+		youdaoScrollPane.getViewport().add(youdaoResultTextArea);
+		
+		// Online BNC
+		JScrollPane bncScrollPane = new JScrollPane();
+		onlineBncResultTextArea = new JTextArea();
+		onlineBncResultTextArea.setText("");
+		onlineBncResultTextArea.setLineWrap(true);
+		bncScrollPane.getViewport().add(onlineBncResultTextArea);
+
+		// add panes to tabbed pane
+		resultPane.add("Youdao", youdaoScrollPane);
+		resultPane.add("BNC", bncScrollPane);
+		
 	}
 
 	public String getWordToSearch() {
 		return searchTextField.getText();
 	}
 	
-	public void setResultArea(SearchResult result) {
+	public JTextArea getYoudaoArea() {
+		return youdaoResultTextArea;
+	}
+	
+	public JTextArea getBncArea() {
+		return onlineBncResultTextArea;
+	}
+	
+	public void setResultArea(JTextArea area, SearchResult result) {
 		if (result.hasResult() == true) {
-			resultTextArea.setForeground(Color.BLACK);
-			resultTextArea.setText(result.getContent());
+			area.setForeground(Color.BLACK);
+			area.setText(result.getContent());
 		} else {
-			resultTextArea.setForeground(Color.RED);
-			resultTextArea.setText(result.getContent());
+			area.setForeground(Color.RED);
+			area.setText(result.getContent());
 		}
 	}
 	

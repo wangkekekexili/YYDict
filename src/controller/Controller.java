@@ -11,6 +11,7 @@ import cache.Cache;
 import cache.SimpleCache;
 import gui.SimpleGui;
 import util.SearchResult;
+import util.bnc.OnlineBnc;
 import util.youdao.YoudaoDictionary;
 
 public class Controller implements ActionListener {
@@ -71,7 +72,12 @@ public class Controller implements ActionListener {
 		}
 		
 		SearchResult result = thread.getSearchResult();
-		frame.setResultArea(result);
+		frame.setResultArea(frame.getYoudaoArea(), result);
+		
+		frame.setResultArea(frame.getBncArea(), 
+				OnlineBnc.search(frame.getWordToSearch()));
+		frame.getYoudaoArea().setCaretPosition(0);
+		frame.getBncArea().setCaretPosition(0);
 	}
 
 }

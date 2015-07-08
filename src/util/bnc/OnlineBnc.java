@@ -44,7 +44,7 @@ public class OnlineBnc {
 			result.append(Integer.toString(index));
 			result.append(": ");
 			result.append(solutions.get(index).getAllElements().text());
-			result.append("\n");
+			result.append("\n\n");
 		}
 		
 		return new SearchResult(true, result.toString());
