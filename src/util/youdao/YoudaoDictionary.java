@@ -1,4 +1,4 @@
-package util;
+package util.youdao;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import util.SearchResult;
 
 /**
  * Use Cambridge web service to translate from English to simplified Chinese.

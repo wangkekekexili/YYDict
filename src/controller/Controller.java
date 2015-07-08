@@ -10,8 +10,8 @@ import org.mapdb.DBMaker;
 import cache.Cache;
 import cache.SimpleCache;
 import gui.SimpleGui;
-import util.YoudaoDictionary;
 import util.SearchResult;
+import util.youdao.YoudaoDictionary;
 
 public class Controller implements ActionListener {
 
