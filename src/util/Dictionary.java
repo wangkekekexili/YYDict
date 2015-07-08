@@ -42,7 +42,7 @@ public class Dictionary {
 		String jsonString = null;
 		try {
 			jsonString = getJsonString(YOUDAO_DICT_URL + 
-					word.replaceAll(Pattern.quote(" "), "_"));
+					word.replaceAll(Pattern.quote(" "), "+"));
 		} catch (Exception e) {
 			return new SearchResult(false, 
 					"Cannot get result from Youdao Dict.\n"
