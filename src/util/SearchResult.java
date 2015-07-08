@@ -1,3 +1,4 @@
+package util;
 
 public class SearchResult {
 	private boolean hasResult;

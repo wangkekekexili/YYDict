@@ -1,3 +1,4 @@
+package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -7,6 +8,9 @@ import org.mapdb.DBMaker;
 
 import cache.Cache;
 import cache.SimpleCache;
+import gui.SimpleGui;
+import util.Dictionary;
+import util.SearchResult;
 
 public class Controller implements ActionListener {
 
@@ -17,7 +21,7 @@ public class Controller implements ActionListener {
 	public Controller(SimpleGui frame) {
 		this.frame = frame;
 		inMemoryCache = new SimpleCache();
-		onDiskCache = DBMaker.fileDB(new File("dictionary/dictionary"))
+		onDiskCache = DBMaker.fileDB(new File("dictionary"))
 				.closeOnJvmShutdown()
 				.make()
 				.treeMap("youdao");

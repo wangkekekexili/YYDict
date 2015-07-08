@@ -1,10 +1,14 @@
+package gui;
+
 import java.awt.Color;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+
+import controller.Controller;
+import util.SearchResult;
 
 @SuppressWarnings("serial")
 public class SimpleGui extends JFrame {
@@ -53,9 +57,4 @@ public class SimpleGui extends JFrame {
 		}
 	}
 	
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(()->{
-			new SimpleGui().setVisible(true);;
-		});
-	}
 }
