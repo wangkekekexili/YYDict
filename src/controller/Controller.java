@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.concurrent.ConcurrentNavigableMap;
 
+import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
 import cache.Cache;
@@ -16,15 +17,16 @@ public class Controller implements ActionListener {
 
 	private SimpleGui frame;
 	private Cache inMemoryCache;
+	private DB db;
 	private ConcurrentNavigableMap<String, String> onDiskCache;
 	
 	public Controller(SimpleGui frame) {
 		this.frame = frame;
 		inMemoryCache = new SimpleCache();
-		onDiskCache = DBMaker.fileDB(new File("dictionary"))
+		db = DBMaker.fileDB(new File("dictionary"))
 				.closeOnJvmShutdown()
-				.make()
-				.treeMap("youdao");
+				.make();
+		onDiskCache = db.treeMap("youdao");
 	}
 	
 	@Override
@@ -49,6 +51,7 @@ public class Controller implements ActionListener {
 					if (result.hasResult() == true) {
 						inMemoryCache.put(wordToSearch, result.getContent());
 						onDiskCache.put(wordToSearch, result.getContent());
+						db.commit();
 					}
 				}
 			}
