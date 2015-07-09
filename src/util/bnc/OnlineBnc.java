@@ -17,6 +17,8 @@ import util.SearchResult;
  */
 public class OnlineBnc {
 
+	public static final int TIMEOUT = 10 * 1000;
+	
 	public static final String ONLINE_BNC_URL = 
 			"http://bnc.bl.uk/saraWeb.php?qy=";
 	
@@ -25,7 +27,8 @@ public class OnlineBnc {
 		Document document = null;
 		
 		try {
-			document = Jsoup.connect(ONLINE_BNC_URL + wordForUrl).get();
+			document = Jsoup.connect(ONLINE_BNC_URL + wordForUrl)
+					.timeout(TIMEOUT).get();
 		} catch (IOException e) {
 			return new SearchResult(false, e.getMessage());
 		}
