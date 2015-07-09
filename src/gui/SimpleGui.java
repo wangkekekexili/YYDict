@@ -1,7 +1,10 @@
 package gui;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -24,10 +27,14 @@ public class SimpleGui extends JFrame {
 		Controller listener = new Controller(this);
 		
 		setTitle("YY Dict");
+		try {
+			setIconImage(ImageIO.read(new File("resource" + File.separator + 
+					"icon" + File.separator + "icon.png")));
+		} catch (IOException e) {}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		
-		setSize(240, 320);
+		setSize(320, 480);
 		getContentPane().setLayout(null);
 		
 		searchTextField = new JTextField();
@@ -42,7 +49,7 @@ public class SimpleGui extends JFrame {
 		getContentPane().add(searchButton);
 		
 		JTabbedPane resultPane = new JTabbedPane();
-		resultPane.setBounds(10, 80, getWidth()-20, 210);
+		resultPane.setBounds(10, 80, getWidth()-20, 350);
 		getContentPane().add(resultPane);
 		
 		// Youdao
