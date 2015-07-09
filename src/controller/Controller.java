@@ -24,7 +24,7 @@ public class Controller implements ActionListener {
 	public Controller(SimpleGui frame) {
 		this.frame = frame;
 		inMemoryCache = new SimpleCache();
-		db = DBMaker.fileDB(new File("dictionary"))
+		db = DBMaker.fileDB(new File("yydict" + File.separator + "dictionary"))
 				.closeOnJvmShutdown()
 				.make();
 		onDiskCache = db.treeMap("youdao");
@@ -78,6 +78,9 @@ public class Controller implements ActionListener {
 				OnlineBnc.search(frame.getWordToSearch()));
 		frame.getYoudaoArea().setCaretPosition(0);
 		frame.getBncArea().setCaretPosition(0);
+		
+		frame.getPlayButton().setVisible(false);
+		
 	}
 
 }
