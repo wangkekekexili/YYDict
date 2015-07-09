@@ -57,10 +57,13 @@ public class SimpleGui extends JFrame {
 		audioButton.setBounds(210, 10, 20, 20);
 		getContentPane().add(audioButton);
 		audioButton.setVisible(false);
+		audioButton.setActionCommand("play");
+		audioButton.addActionListener(listener);
 		
 		JButton searchButton = new JButton("Search");
 		searchButton.addActionListener(listener);
 		searchButton.setBounds(60, 40, getWidth()-120, 30);
+		searchButton.setActionCommand("search");
 		getContentPane().add(searchButton);
 		
 		JTabbedPane resultPane = new JTabbedPane();
