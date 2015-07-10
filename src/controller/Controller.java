@@ -4,6 +4,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.concurrent.ConcurrentNavigableMap;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
@@ -12,6 +16,7 @@ import cache.SimpleCache;
 import gui.SimpleGui;
 import util.SearchResult;
 import util.bnc.OnlineBnc;
+import util.webster.WebsterHelper;
 import util.youdao.YoudaoDictionary;
 
 public class Controller implements ActionListener {
@@ -21,10 +26,12 @@ public class Controller implements ActionListener {
 	private DB db;
 	private ConcurrentNavigableMap<String, String> onDiskCache;
 	
+	private String audioFileName = null;
+	
 	public Controller(SimpleGui frame) {
 		this.frame = frame;
 		inMemoryCache = new SimpleCache();
-		db = DBMaker.fileDB(new File("dictionary"))
+		db = DBMaker.fileDB(new File("yydict" + File.separator + "dictionary"))
 				.closeOnJvmShutdown()
 				.make();
 		onDiskCache = db.treeMap("youdao");
@@ -32,7 +39,20 @@ public class Controller implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+		case "search":
+			search();
+			break;
+		case "play":
+			play();
+			break;
+		default:
+		}
 		
+		
+	}
+	
+	private void search() {
 		class SearchThread extends Thread {
 			private SearchResult result = new SearchResult(
 					false, "Search thread error.");
@@ -78,6 +98,32 @@ public class Controller implements ActionListener {
 				OnlineBnc.search(frame.getWordToSearch()));
 		frame.getYoudaoArea().setCaretPosition(0);
 		frame.getBncArea().setCaretPosition(0);
+		
+		frame.getPlayButton().setVisible(false);
+		
+		// get audio
+		audioFileName = WebsterHelper.getAudio(frame.getWordToSearch());
+		if (audioFileName == null) {
+			frame.getPlayButton().setVisible(false);
+		} else {
+			frame.getPlayButton().setVisible(true);
+		}
+	}
+	
+	private void play() {
+		if (audioFileName == null) {
+			frame.getPlayButton().setVisible(false);
+		}
+		try {
+			AudioInputStream audioInput = AudioSystem.getAudioInputStream(
+					new File("yydict" + File.separator + "audio" +
+							File.separator + audioFileName));
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInput);
+			clip.start();
+		} catch (Exception e) {
+			frame.getPlayButton().setVisible(false);
+		}
 	}
 
 }

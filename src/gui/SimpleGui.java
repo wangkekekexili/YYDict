@@ -1,10 +1,12 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -21,6 +23,8 @@ public class SimpleGui extends JFrame {
 	private JTextField searchTextField;
 	private JTextArea youdaoResultTextArea;
 	private JTextArea onlineBncResultTextArea;
+	
+	private JButton audioButton;
 	
 	public SimpleGui() {
 		
@@ -43,9 +47,27 @@ public class SimpleGui extends JFrame {
 		
 		searchTextField.addActionListener(listener);
 		
+		// audio button
+		
+		audioButton = new JButton();
+		try {
+			Image playAudioImage = ImageIO.read(
+					new File("yydict" + File.separator + "image" 
+							+ File.separator + "play.png"));
+			audioButton.setIcon(new ImageIcon(playAudioImage));
+		} catch (IOException e) {
+			audioButton.setText("play");
+		}
+		audioButton.setBounds(210, 10, 20, 20);
+		getContentPane().add(audioButton);
+		audioButton.setVisible(false);
+		audioButton.setActionCommand("play");
+		audioButton.addActionListener(listener);
+		
 		JButton searchButton = new JButton("Search");
 		searchButton.addActionListener(listener);
 		searchButton.setBounds(60, 40, getWidth()-120, 30);
+		searchButton.setActionCommand("search");
 		getContentPane().add(searchButton);
 		
 		JTabbedPane resultPane = new JTabbedPane();
@@ -82,6 +104,10 @@ public class SimpleGui extends JFrame {
 	
 	public JTextArea getBncArea() {
 		return onlineBncResultTextArea;
+	}
+	
+	public JButton getPlayButton() {
+		return audioButton;
 	}
 	
 	public void setResultArea(JTextArea area, SearchResult result) {
