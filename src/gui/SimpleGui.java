@@ -58,7 +58,7 @@ public class SimpleGui extends JFrame {
 		} catch (IOException e) {
 			audioButton.setText("play");
 		}
-		audioButton.setBounds(210, 10, 20, 20);
+		audioButton.setBounds(285, 10, 20, 20);
 		getContentPane().add(audioButton);
 		audioButton.setVisible(false);
 		audioButton.setActionCommand("play");
