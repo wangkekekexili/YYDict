@@ -13,6 +13,10 @@ import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
 import gui.SimpleGui;
+import net.beadsproject.beads.core.AudioContext;
+import net.beadsproject.beads.data.SampleManager;
+import net.beadsproject.beads.ugens.Gain;
+import net.beadsproject.beads.ugens.SamplePlayer;
 import util.SearchResult;
 import util.bnc.OnlineBnc;
 import util.cache.Cache;
@@ -110,12 +114,14 @@ public class Controller implements ActionListener {
 			frame.getPlayButton().setVisible(false);
 		}
 		try {
-			AudioInputStream audioInput = AudioSystem.getAudioInputStream(
-					new File("yydict" + File.separator + "audio" +
-							File.separator + audioFileName));
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInput);
-			clip.start();
+			AudioContext context = new AudioContext();
+			String file = "yydict/audio/" + audioFileName;
+			SamplePlayer player = new SamplePlayer(context, 
+					SampleManager.sample(file));
+			Gain g = new Gain(context, 2, 0.2f);
+			g.addInput(player);
+			context.out.addInput(g);
+			context.start();
 		} catch (Exception e) {
 			frame.getPlayButton().setVisible(false);
 		}
