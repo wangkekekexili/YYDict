@@ -1,4 +1,4 @@
-package cache;
+package util.cache;
 
 public abstract class Cache {
 	public abstract String get(String word);
