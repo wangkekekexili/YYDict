@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import controller.Controller;
 import util.SearchResult;
@@ -54,6 +56,8 @@ public class SimpleGui extends JFrame {
 			audioButton.setText("play");
 		}
 		audioButton.setBounds(285, 10, 20, 20);
+		Border border = BorderFactory.createEmptyBorder();
+		audioButton.setBorder(border);
 		getContentPane().add(audioButton);
 		audioButton.setVisible(false);
 		audioButton.setActionCommand("play");
