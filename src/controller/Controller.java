@@ -59,7 +59,7 @@ public class Controller implements ActionListener {
 	}
 	
 	private void search() {
-		class SearchThread extends Thread {
+		class YoudaoThread extends Thread {
 			private SearchResult result = new SearchResult(
 					false, "Search thread error.");
 			@Override
@@ -73,8 +73,7 @@ public class Controller implements ActionListener {
 							onDiskCache.get(wordToSearch));
 					inMemoryCache.put(wordToSearch, result.getContent());
 				} else {
-					result = YoudaoDictionary.search(
-							frame.getWordToSearch());
+					result = YoudaoDictionary.search(wordToSearch);
 					if (result.hasResult() == true) {
 						inMemoryCache.put(wordToSearch, result.getContent());
 						onDiskCache.put(wordToSearch, result.getContent());
@@ -87,27 +86,57 @@ public class Controller implements ActionListener {
 			}
 		}
 		
-		SearchThread thread = new SearchThread();
-		thread.start();
-		
-		try {
-			thread.join();
-		} catch (Exception e1) {
-			thread.interrupt();
+		class BNCThread extends Thread {
+			private SearchResult result = new SearchResult(
+					false, "Search thread error.");
+			@Override
+			public void run() {
+				String wordTOSearch = frame.getWordToSearch();
+				result = OnlineBnc.search(wordTOSearch);
+			}
+			public SearchResult getSearchResult() {
+				return result;
+			}
 		}
 		
-		SearchResult result = thread.getSearchResult();
-		frame.setResultArea(frame.getYoudaoArea(), result);
+		class WebsterThread extends Thread {
+			private SearchResult result = new SearchResult(
+					false, "Search thread error.");
+			@Override
+			public void run() {
+				String wordToSearch = frame.getWordToSearch();
+				String audioFileName = WebsterHelper.getAudio(wordToSearch);
+				Controller.this.audioFileName = audioFileName;
+			}
+		}
+		
+		YoudaoThread youdaoThread = new YoudaoThread();
+		BNCThread bncThread = new BNCThread();
+		WebsterThread websterThread = new WebsterThread();
+		
+		youdaoThread.start();
+		bncThread.start();
+		websterThread.start();
+		
+		try {
+			youdaoThread.join();
+			bncThread.join();
+			websterThread.join();
+		} catch (Exception e1) {
+			youdaoThread.interrupt();
+			bncThread.interrupt();
+			websterThread.interrupt();
+		}
+		
+		frame.setResultArea(frame.getYoudaoArea(),
+				youdaoThread.getSearchResult());
+		frame.getYoudaoArea().setCaretPosition(0);
 		
 		frame.setResultArea(frame.getBncArea(), 
-				OnlineBnc.search(frame.getWordToSearch()));
-		frame.getYoudaoArea().setCaretPosition(0);
+				bncThread.getSearchResult());
 		frame.getBncArea().setCaretPosition(0);
 		
-		frame.getPlayButton().setVisible(false);
-		
 		// get audio
-		audioFileName = WebsterHelper.getAudio(frame.getWordToSearch());
 		if (audioFileName == null) {
 			frame.getPlayButton().setVisible(false);
 		} else {
