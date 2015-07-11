@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.concurrent.ConcurrentNavigableMap;
 
+import javax.print.attribute.standard.MediaPrintableArea;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -11,11 +12,12 @@ import javax.sound.sampled.Clip;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
-import cache.Cache;
-import cache.SimpleCache;
 import gui.SimpleGui;
 import util.SearchResult;
 import util.bnc.OnlineBnc;
+import util.cache.Cache;
+import util.cache.InMemoryHashMapCache;
+import util.cache.OnDiskMapdbCache;
 import util.webster.WebsterHelper;
 import util.youdao.YoudaoDictionary;
 
@@ -23,18 +25,14 @@ public class Controller implements ActionListener {
 
 	private SimpleGui frame;
 	private Cache inMemoryCache;
-	private DB db;
-	private ConcurrentNavigableMap<String, String> onDiskCache;
+	private Cache onDiskCache;
 	
 	private String audioFileName = null;
 	
 	public Controller(SimpleGui frame) {
 		this.frame = frame;
-		inMemoryCache = new SimpleCache();
-		db = DBMaker.fileDB(new File("yydict" + File.separator + "dictionary"))
-				.closeOnJvmShutdown()
-				.make();
-		onDiskCache = db.treeMap("youdao");
+		inMemoryCache = new InMemoryHashMapCache();
+		onDiskCache = new OnDiskMapdbCache();
 	}
 	
 	@Override
@@ -48,8 +46,6 @@ public class Controller implements ActionListener {
 			break;
 		default:
 		}
-		
-		
 	}
 	
 	private void search() {
@@ -72,7 +68,6 @@ public class Controller implements ActionListener {
 					if (result.hasResult() == true) {
 						inMemoryCache.put(wordToSearch, result.getContent());
 						onDiskCache.put(wordToSearch, result.getContent());
-						db.commit();
 					}
 				}
 			}
