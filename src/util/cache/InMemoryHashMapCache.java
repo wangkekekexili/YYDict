@@ -3,7 +3,7 @@ package util.cache;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleCache extends Cache {
+public class InMemoryHashMapCache extends Cache {
 
 	Map<String, String> defination = new HashMap<>();
 	
