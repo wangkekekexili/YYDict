@@ -3,6 +3,12 @@ package util.cache;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A simple in memory cache using {@code java.util.HashMap}.
+ * 
+ * @author kewang
+ *
+ */
 public class InMemoryHashMapCache extends Cache {
 
 	Map<String, String> defination = new HashMap<>();
