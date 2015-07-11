@@ -88,8 +88,6 @@ public class Controller implements ActionListener {
 		}
 		
 		class WebsterThread extends Thread {
-			private SearchResult result = new SearchResult(
-					false, "Search thread error.");
 			@Override
 			public void run() {
 				String wordToSearch = frame.getWordToSearch();
