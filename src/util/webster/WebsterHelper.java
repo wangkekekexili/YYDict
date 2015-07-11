@@ -8,6 +8,8 @@ import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import util.Resources;
+
 /**
  * A helper class for Merriam-Webster API.
  * 
@@ -52,7 +54,7 @@ public class WebsterHelper {
 			
 			// download audio
 			FileUtils.copyURLToFile(new URL(wavUrl), 
-					new File("yydict"+File.separator+"audio"+File.separator+wavFileName));
+					new File(Resources.getAudioLocation(wavFileName)));
 			
 			return wavFileName;
 		} catch (Exception e) {

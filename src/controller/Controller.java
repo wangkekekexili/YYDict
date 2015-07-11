@@ -2,12 +2,17 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.concurrent.ConcurrentNavigableMap;
 
 import javax.print.attribute.standard.MediaPrintableArea;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -17,6 +22,7 @@ import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.data.SampleManager;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.SamplePlayer;
+import util.Resources;
 import util.SearchResult;
 import util.bnc.OnlineBnc;
 import util.cache.Cache;
@@ -114,14 +120,35 @@ public class Controller implements ActionListener {
 			frame.getPlayButton().setVisible(false);
 		}
 		try {
+			// Redirect out and err to prevent beats library to print on screen.
+			PrintStream out = System.out;
+			PrintStream err = System.err;
+			System.setOut(new PrintStream(new OutputStream() {
+				@Override
+				public void write(int b) throws IOException {
+				}
+			}));
+			System.setErr(new PrintStream(new OutputStream() {
+				@Override
+				public void write(int b) throws IOException {
+				}
+			}));
+			
 			AudioContext context = new AudioContext();
-			String file = "yydict/audio/" + audioFileName;
+			String file = Resources.getAudioLocation(audioFileName);
 			SamplePlayer player = new SamplePlayer(context, 
 					SampleManager.sample(file));
 			Gain g = new Gain(context, 2, 0.2f);
 			g.addInput(player);
 			context.out.addInput(g);
 			context.start();
+			
+			// Set back standard out and err.
+			try {
+				Thread.sleep(1000);
+			} catch (Exception e){}
+			System.setOut(out);
+			System.setErr(err);
 		} catch (Exception e) {
 			frame.getPlayButton().setVisible(false);
 		}

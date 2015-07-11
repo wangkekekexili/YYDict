@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentNavigableMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
+import util.Resources;
+
 /**
  * A simple on disk cache using MapDB.
  * 
@@ -18,13 +20,13 @@ public class OnDiskMapdbCache extends Cache {
 	private ConcurrentNavigableMap<String, String> map;
 	
 	public OnDiskMapdbCache() {
-		File databaseFile = new File("yydict" + File.separator + "dictionary");
+		File databaseFile = new File(Resources.ON_DISK_CACHE_FILE);
 		database = DBMaker
 				.fileDB(databaseFile)
 				.transactionDisable()
 				.closeOnJvmShutdown()
 				.make();
-		map = database.treeMap("youdao");
+		map = database.treeMap(Resources.YOUDAO);
 	}
 	
 	public OnDiskMapdbCache(String cacheFileName) {
@@ -33,7 +35,7 @@ public class OnDiskMapdbCache extends Cache {
 				.closeOnJvmShutdown()
 				.transactionDisable()
 				.make();
-		map = database.treeMap("youdao");
+		map = database.treeMap(Resources.YOUDAO);
 	}
 	
 	@Override
