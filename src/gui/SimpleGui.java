@@ -31,16 +31,12 @@ public class SimpleGui extends JFrame {
 		Controller listener = new Controller(this);
 		
 		setTitle("YY Dict");
-		try {
-			setIconImage(ImageIO.read(new File("resource" + File.separator + 
-					"icon" + File.separator + "icon.png")));
-		} catch (IOException e) {}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
-		
 		setSize(320, 480);
 		getContentPane().setLayout(null);
 		
+		// search field
 		searchTextField = new JTextField();
 		searchTextField.setBounds(40, 5, getWidth()-80, 30);
 		getContentPane().add(searchTextField);
@@ -48,7 +44,6 @@ public class SimpleGui extends JFrame {
 		searchTextField.addActionListener(listener);
 		
 		// audio button
-		
 		audioButton = new JButton();
 		try {
 			Image playAudioImage = ImageIO.read(
