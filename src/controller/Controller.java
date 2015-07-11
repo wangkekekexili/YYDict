@@ -1,21 +1,9 @@
 package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.concurrent.ConcurrentNavigableMap;
-
-import javax.print.attribute.standard.MediaPrintableArea;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
 
 import gui.SimpleGui;
 import net.beadsproject.beads.core.AudioContext;
