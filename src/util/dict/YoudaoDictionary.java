@@ -1,4 +1,4 @@
-package util.youdao;
+package util.dict;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

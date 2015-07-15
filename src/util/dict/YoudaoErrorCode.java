@@ -1,4 +1,4 @@
-package util.youdao;
+package util.dict;
 
 public enum YoudaoErrorCode {
 	NORMAL(0, "normal"),

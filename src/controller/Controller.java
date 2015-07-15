@@ -12,12 +12,12 @@ import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.SamplePlayer;
 import util.Resources;
 import util.SearchResult;
-import util.bnc.OnlineBnc;
 import util.cache.Cache;
 import util.cache.InMemoryHashMapCache;
 import util.cache.OnDiskMapdbCache;
-import util.webster.WebsterHelper;
-import util.youdao.YoudaoDictionary;
+import util.dict.OnlineBnc;
+import util.dict.WebsterHelper;
+import util.dict.YoudaoDictionary;
 
 public class Controller implements ActionListener {
 
