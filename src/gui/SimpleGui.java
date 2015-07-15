@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -27,8 +26,6 @@ public class SimpleGui extends JFrame {
 	
 	private JTextField searchTextField;
 	private JTextArea youdaoResultTextArea;
-	private JTextArea onlineBncResultTextArea;
-	
 	private JButton audioButton;
 	
 	public SimpleGui() {
@@ -74,6 +71,7 @@ public class SimpleGui extends JFrame {
 		searchButton.setActionCommand("search");
 		getContentPane().add(searchButton);
 		
+		// for ENTER 
 		class KeyDispatcher implements KeyEventDispatcher {
 		    public boolean dispatchKeyEvent(KeyEvent e) {
 		    	if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -84,14 +82,10 @@ public class SimpleGui extends JFrame {
 		    	}
 		    }
 		}
-		
 		KeyboardFocusManager manager =
 		         KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(new KeyDispatcher());
 		
-		JTabbedPane resultPane = new JTabbedPane();
-		resultPane.setBounds(10, 80, getWidth()-20, 350);
-		getContentPane().add(resultPane);
 		
 		// Youdao
 		JScrollPane youdaoScrollPane = new JScrollPane();
@@ -99,17 +93,8 @@ public class SimpleGui extends JFrame {
 		youdaoResultTextArea.setText("");
 		youdaoResultTextArea.setLineWrap(true);
 		youdaoScrollPane.getViewport().add(youdaoResultTextArea);
-		
-		// Online BNC
-		JScrollPane bncScrollPane = new JScrollPane();
-		onlineBncResultTextArea = new JTextArea();
-		onlineBncResultTextArea.setText("");
-		onlineBncResultTextArea.setLineWrap(true);
-		bncScrollPane.getViewport().add(onlineBncResultTextArea);
-
-		// add panes to tabbed pane
-		resultPane.add("Youdao", youdaoScrollPane);
-		resultPane.add("BNC", bncScrollPane);
+		youdaoScrollPane.setBounds(10, 80, getWidth()-20, 350);
+		getContentPane().add(youdaoScrollPane);
 		
 	}
 
@@ -119,10 +104,6 @@ public class SimpleGui extends JFrame {
 	
 	public JTextArea getYoudaoArea() {
 		return youdaoResultTextArea;
-	}
-	
-	public JTextArea getBncArea() {
-		return onlineBncResultTextArea;
 	}
 	
 	public JButton getPlayButton() {

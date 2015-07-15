@@ -120,10 +120,6 @@ public class Controller implements ActionListener {
 				youdaoThread.getSearchResult());
 		frame.getYoudaoArea().setCaretPosition(0);
 		
-		frame.setResultArea(frame.getBncArea(), 
-				bncThread.getSearchResult());
-		frame.getBncArea().setCaretPosition(0);
-		
 		// get audio
 		if (audioFileName == null) {
 			frame.getPlayButton().setVisible(false);
