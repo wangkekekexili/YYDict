@@ -2,6 +2,9 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -30,8 +33,10 @@ public class SimpleGui extends JFrame {
 	
 	public SimpleGui() {
 		
+		// Main controller.
 		Controller listener = new Controller(this);
 		
+		// Set up this JFrame
 		setTitle("YY Dict");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -44,7 +49,7 @@ public class SimpleGui extends JFrame {
 		getContentPane().add(searchTextField);
 		
 		searchTextField.addActionListener(listener);
-		
+
 		// audio button
 		audioButton = new JButton();
 		try {
@@ -68,6 +73,21 @@ public class SimpleGui extends JFrame {
 		searchButton.setBounds(60, 40, getWidth()-120, 30);
 		searchButton.setActionCommand("search");
 		getContentPane().add(searchButton);
+		
+		class KeyDispatcher implements KeyEventDispatcher {
+		    public boolean dispatchKeyEvent(KeyEvent e) {
+		    	if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+		    		searchButton.doClick();
+		    		return true;
+		    	} else {
+		    		return false;
+		    	}
+		    }
+		}
+		
+		KeyboardFocusManager manager =
+		         KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		manager.addKeyEventDispatcher(new KeyDispatcher());
 		
 		JTabbedPane resultPane = new JTabbedPane();
 		resultPane.setBounds(10, 80, getWidth()-20, 350);
