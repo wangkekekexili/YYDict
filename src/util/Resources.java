@@ -18,6 +18,10 @@ public class Resources {
 	public static final String AUDIO_ROOT_DIRECTORY = 
 			RESOURCE_ROOT_DIRECTORY + File.separator + "audio";
 	
+	public static final String PLAY_BUTTON_IMAGE_FILE = 
+			RESOURCE_ROOT_DIRECTORY + File.separator + "image"
+			+ File.separator + "play.png";
+	
 	// Unique identifier for each API party.
 	public static final String YOUDAO = "youdao";
 	public static final String BNC = "bnc";
