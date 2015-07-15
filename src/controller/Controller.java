@@ -12,6 +12,7 @@ import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.SamplePlayer;
 import util.Resources;
 import util.SearchResult;
+import util.dict.Bing;
 import util.dict.WebsterHelper;
 import util.dict.Youdao;
 
@@ -65,13 +66,27 @@ public class Controller implements ActionListener {
 			}
 		}
 		
+		class BingThread extends Thread {
+			@Override
+			public void run() {
+				SearchResult result = Bing.search(frame.getWordToSearch());
+				if (result.hasResult()) {
+					frame.appendResult(result.getContent());
+				}
+			}
+		}
+		
 		frame.getResultArea().setText("");
 		
-		YoudaoThread youdaoThread = new YoudaoThread();
-		WebsterThread websterThread = new WebsterThread();
+		Thread[] threadPool = {
+				new YoudaoThread(),
+				new WebsterThread(),
+				new BingThread()
+		};
 		
-		youdaoThread.start();
-		websterThread.start();
+		for (Thread thread : threadPool) {
+			thread.start();
+		}
 		
 	}
 	
