@@ -18,7 +18,7 @@ import util.SearchResult;
  * @author kewang
  *
  */
-public class YoudaoDictionary {
+public class Youdao {
 
 	public static final String YOUDAO_DICT_URL = 
 			"http://fanyi.youdao.com/openapi.do?"

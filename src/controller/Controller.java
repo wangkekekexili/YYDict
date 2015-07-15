@@ -13,7 +13,7 @@ import net.beadsproject.beads.ugens.SamplePlayer;
 import util.Resources;
 import util.SearchResult;
 import util.dict.WebsterHelper;
-import util.dict.YoudaoDictionary;
+import util.dict.Youdao;
 
 public class Controller implements ActionListener {
 
@@ -44,7 +44,7 @@ public class Controller implements ActionListener {
 			@Override
 			public void run() {
 				String word = frame.getWordToSearch();
-				SearchResult result = YoudaoDictionary.search(word);
+				SearchResult result = Youdao.search(word);
 				if (result.hasResult()) {
 					frame.appendResult(result.getContent());
 				}
