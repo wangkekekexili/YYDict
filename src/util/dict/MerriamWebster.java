@@ -16,7 +16,7 @@ import util.Resources;
  * @author kewang
  *
  */
-public class WebsterHelper {
+public class MerriamWebster {
 	
 	public static final String COLLEGIATE_BASE_URL = 
 			"http://www.dictionaryapi.com/api/v1/references/collegiate/xml/";

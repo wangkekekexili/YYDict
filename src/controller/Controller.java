@@ -13,7 +13,7 @@ import net.beadsproject.beads.ugens.SamplePlayer;
 import util.Resources;
 import util.SearchResult;
 import util.dict.Bing;
-import util.dict.WebsterHelper;
+import util.dict.MerriamWebster;
 import util.dict.Youdao;
 
 public class Controller implements ActionListener {
@@ -56,7 +56,7 @@ public class Controller implements ActionListener {
 			@Override
 			public void run() {
 				String wordToSearch = frame.getWordToSearch();
-				String audioFileName = WebsterHelper.getAudio(wordToSearch);
+				String audioFileName = MerriamWebster.getAudio(wordToSearch);
 				Controller.this.audioFileName = audioFileName;
 				if (audioFileName == null) {
 					frame.getPlayButton().setVisible(false);

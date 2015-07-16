@@ -15,7 +15,7 @@ import util.SearchResult;
  * @author kwang
  *
  */
-public class OnlineBnc {
+public class Bnc {
 
 	public static final int TIMEOUT = 10 * 1000;
 	
