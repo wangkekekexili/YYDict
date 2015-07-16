@@ -56,12 +56,15 @@ public class Controller implements ActionListener {
 			@Override
 			public void run() {
 				String wordToSearch = frame.getWordToSearch();
-				String audioFileName = MerriamWebster.getAudio(wordToSearch);
-				Controller.this.audioFileName = audioFileName;
+				SearchResult result = MerriamWebster.search(wordToSearch);
+				audioFileName = result.getAudioFileName();
 				if (audioFileName == null) {
 					frame.getPlayButton().setVisible(false);
 				} else {
 					frame.getPlayButton().setVisible(true);
+				}
+				if (result.hasResult()) {
+					frame.appendResult(result.getContent());
 				}
 			}
 		}
