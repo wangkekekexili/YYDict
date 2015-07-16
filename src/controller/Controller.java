@@ -14,6 +14,7 @@ import util.Resources;
 import util.SearchResult;
 import util.dict.Bing;
 import util.dict.MerriamWebster;
+import util.dict.Stands4Abbr;
 import util.dict.Youdao;
 
 public class Controller implements ActionListener {
@@ -79,12 +80,24 @@ public class Controller implements ActionListener {
 			}
 		}
 		
+		class Stands4AbbrThread extends Thread {
+			@Override
+			public void run() {
+				SearchResult result = Stands4Abbr
+						.search(frame.getWordToSearch());
+				if (result.hasResult()) {
+					frame.appendResult(result.getContent());
+				}
+			}
+		}
+		
 		frame.getResultArea().setText("");
 		
 		Thread[] threadPool = {
 				new YoudaoThread(),
 				new WebsterThread(),
-				new BingThread()
+				new BingThread(),
+				new Stands4AbbrThread()
 		};
 		
 		for (Thread thread : threadPool) {
