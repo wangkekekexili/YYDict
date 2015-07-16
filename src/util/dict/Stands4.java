@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 
 import util.SearchResult;
 
-public class Stands4Abbr {
+public class Stands4 {
 
 	private static final String STANDS4_ABBREVIATION_BASE_URL = 
 			"http://www.stands4.com/services/v2/abbr.php";
@@ -28,7 +28,7 @@ public class Stands4Abbr {
 		categories.add("Software");
 	}
 	
-	public static SearchResult search(String word) {
+	public static SearchResult searchAbbr(String word) {
 		word = word.trim();
 		if (word.contains(" ")) {
 			return new SearchResult(false, "");

@@ -14,7 +14,7 @@ import util.Resources;
 import util.SearchResult;
 import util.dict.Bing;
 import util.dict.MerriamWebster;
-import util.dict.Stands4Abbr;
+import util.dict.Stands4;
 import util.dict.Youdao;
 
 public class Controller implements ActionListener {
@@ -83,8 +83,8 @@ public class Controller implements ActionListener {
 		class Stands4AbbrThread extends Thread {
 			@Override
 			public void run() {
-				SearchResult result = Stands4Abbr
-						.search(frame.getWordToSearch());
+				SearchResult result = Stands4
+						.searchAbbr(frame.getWordToSearch());
 				if (result.hasResult()) {
 					frame.appendResult(result.getContent());
 				}
