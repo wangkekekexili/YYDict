@@ -16,19 +16,44 @@ public class Bing {
 					.get();
 			Element ul = document.getElementsByClass("qdef").get(0).getElementsByTag("ul").get(0);
 			
-			StringBuilder result = new StringBuilder();
-			result.append("Bing\n");
+			StringBuilder simpleDefinition = new StringBuilder();
+			simpleDefinition.append("Bing\n");
 			
 			for (Element li: ul.getElementsByTag("li")) {
 				Element partOfSpeech = li.getElementsByClass("pos").get(0);
 				Element defination = li.getElementsByClass("def").get(0);
-				result.append(" ");
-				result.append(partOfSpeech.text());
-				result.append(" ");
-				result.append(defination.text());
-				result.append("\n");
+				simpleDefinition.append(" ");
+				simpleDefinition.append(partOfSpeech.text());
+				simpleDefinition.append(" ");
+				simpleDefinition.append(defination.text());
+				simpleDefinition.append("\n");
 			}
-			result.append("\n\n");
+			simpleDefinition.append("\n\n");
+
+			StringBuilder example = new StringBuilder();
+			example.append("Bing Example\n");
+			
+			int numberOfExamples = 0;
+			for (Element div : document.getElementsByClass("li_ex")) {
+				String sentence = div.getElementsByClass("val_ex")
+						.get(0).text();
+				numberOfExamples++;
+				example.append(numberOfExamples);
+				example.append(": ");
+				example.append(sentence);
+				example.append("\n\n");
+			}
+			example.append("\n\n");
+			
+			StringBuilder result = new StringBuilder(
+					simpleDefinition.length() + example.length());
+			
+			result.append(simpleDefinition.toString());
+			
+			if (numberOfExamples > 0) {
+				result.append(example.toString());
+			}
+			
 			
 			return new SearchResult(true, result.toString());
 			
