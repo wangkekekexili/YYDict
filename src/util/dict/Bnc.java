@@ -40,15 +40,22 @@ public class Bnc {
 		} catch (NullPointerException e) {
 			return new SearchResult(false, e.getMessage());
 		}
-		
+
 		StringBuilder result = new StringBuilder();
+		result.append("BNC example\n");
 		for (int index = 1;index != solutions.size();index++) {
 			solutions.get(index).getElementsByTag("b").remove();
 			result.append(Integer.toString(index));
 			result.append(": ");
 			result.append(solutions.get(index).getAllElements().text());
 			result.append("\n\n");
+			if (index == 5) {
+				break;
+			}
 		}
+		result.append("\n");
+		
+		
 		
 		return new SearchResult(true, result.toString());
 	}

@@ -13,6 +13,7 @@ import net.beadsproject.beads.ugens.SamplePlayer;
 import util.Resources;
 import util.SearchResult;
 import util.dict.Bing;
+import util.dict.Bnc;
 import util.dict.MerriamWebster;
 import util.dict.Stands4;
 import util.dict.Youdao;
@@ -91,13 +92,24 @@ public class Controller implements ActionListener {
 			}
 		}
 		
+		class BncThread extends Thread {
+			@Override
+			public void run() {
+				SearchResult result = Bnc.search(frame.getWordToSearch());
+				if (result.hasResult()) {
+					frame.appendResult(result.getContent());
+				}
+			}
+		}
+		
 		frame.getResultArea().setText("");
 		
 		Thread[] threadPool = {
 				new YoudaoThread(),
 				new WebsterThread(),
 				new BingThread(),
-				new Stands4AbbrThread()
+				new Stands4AbbrThread(),
+				new BncThread()
 		};
 		
 		for (Thread thread : threadPool) {
