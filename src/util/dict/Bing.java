@@ -22,7 +22,8 @@ public class Bing {
 			for (Element li: ul.getElementsByTag("li")) {
 				Element partOfSpeech = li.getElementsByClass("pos").get(0);
 				Element defination = li.getElementsByClass("def").get(0);
-				result.append(partOfSpeech.text()+" "+defination.text());
+				result.append(" ");
+				result.append(partOfSpeech.text());
 				result.append(" ");
 				result.append(defination.text());
 				result.append("\n");
