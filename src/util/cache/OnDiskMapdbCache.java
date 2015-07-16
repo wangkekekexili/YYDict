@@ -1,6 +1,8 @@
 package util.cache;
 
 import java.io.File;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.concurrent.ConcurrentNavigableMap;
 
 import org.mapdb.DB;
@@ -21,6 +23,17 @@ public class OnDiskMapdbCache extends Cache {
 	
 	public OnDiskMapdbCache() {
 		File databaseFile = new File(Resources.ON_DISK_CACHE_FILE);
+		if (databaseFile.exists() == false) {
+			try {
+				if (databaseFile.getParentFile().exists() == false) {
+					databaseFile.getParentFile().mkdirs();
+				}
+				databaseFile.createNewFile();
+				System.out.println(databaseFile.toString());
+			} catch (IOException e) {
+				throw new IOError(e);
+			}
+		}
 		database = DBMaker
 				.fileDB(databaseFile)
 				.transactionDisable()
