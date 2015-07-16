@@ -1,4 +1,4 @@
-package util.webster;
+package util.dict;
 
 import java.io.File;
 import java.net.URL;

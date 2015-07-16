@@ -1,4 +1,4 @@
-package util.youdao;
+package util.dict;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +18,7 @@ import util.SearchResult;
  * @author kewang
  *
  */
-public class YoudaoDictionary {
+public class Youdao {
 
 	public static final String YOUDAO_DICT_URL = 
 			"http://fanyi.youdao.com/openapi.do?"
@@ -66,12 +66,13 @@ public class YoudaoDictionary {
 			return new SearchResult(false, "No result.");
 		}
 		StringBuilder result = new StringBuilder();
+		result.append("Youdao\n");
 		for (int i = 0;i != defination.size();i++) {
-			result.append((i+1));
-			result.append(".");
-			result.append(defination.get(i).toString().replace('"', ' '));
+			result.append(defination.get(i).toString()
+					.trim().replace('"', ' '));
 			result.append("\n");
 		}
+		result.append("\n\n");
 		return new SearchResult(true, result.toString());
 	}
 

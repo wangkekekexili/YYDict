@@ -1,7 +1,9 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.Image;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,27 +13,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 import controller.Controller;
-import util.SearchResult;
+import util.Resources;
 
 @SuppressWarnings("serial")
 public class SimpleGui extends JFrame {
 	
 	private JTextField searchTextField;
-	private JTextArea youdaoResultTextArea;
-	private JTextArea onlineBncResultTextArea;
+	private JTextArea resultTextArea;
+	private JButton searchButton;
+	private JButton playButton;
 	
-	private JButton audioButton;
+	private final Object object = new Object(); // for synchronization of result area
 	
 	public SimpleGui() {
 		
 		Controller listener = new Controller(this);
 		
+		// Set up this JFrame
 		setTitle("YY Dict");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -44,79 +46,75 @@ public class SimpleGui extends JFrame {
 		getContentPane().add(searchTextField);
 		
 		searchTextField.addActionListener(listener);
-		
+
 		// audio button
-		audioButton = new JButton();
+		playButton = new JButton();
 		try {
 			Image playAudioImage = ImageIO.read(
-					new File("yydict" + File.separator + "image" 
-							+ File.separator + "play.png"));
-			audioButton.setIcon(new ImageIcon(playAudioImage));
+					new File(Resources.PLAY_BUTTON_IMAGE_FILE));
+			playButton.setIcon(new ImageIcon(playAudioImage));
 		} catch (IOException e) {
-			audioButton.setText("play");
+			playButton.setText("play");
 		}
-		audioButton.setBounds(285, 10, 20, 20);
-		Border border = BorderFactory.createEmptyBorder();
-		audioButton.setBorder(border);
-		getContentPane().add(audioButton);
-		audioButton.setVisible(false);
-		audioButton.setActionCommand("play");
-		audioButton.addActionListener(listener);
+		playButton.setBounds(285, 10, 20, 20);
+		playButton.setBorder(BorderFactory.createEmptyBorder());
+		getContentPane().add(playButton);
+		playButton.setVisible(false);
+		playButton.setActionCommand("play");
+		playButton.addActionListener(listener);
 		
-		JButton searchButton = new JButton("Search");
+		// search button
+		searchButton = new JButton("Search");
 		searchButton.addActionListener(listener);
 		searchButton.setBounds(60, 40, getWidth()-120, 30);
 		searchButton.setActionCommand("search");
 		getContentPane().add(searchButton);
 		
-		JTabbedPane resultPane = new JTabbedPane();
-		resultPane.setBounds(10, 80, getWidth()-20, 350);
-		getContentPane().add(resultPane);
+		// for ENTER 
+		class KeyDispatcher implements KeyEventDispatcher {
+		    public boolean dispatchKeyEvent(KeyEvent e) {
+		    	if (e.getKeyCode() == KeyEvent.VK_ENTER &&
+		    			e.getID() == KeyEvent.KEY_PRESSED) {
+		    		searchButton.doClick();
+		    		return true;
+		    	} else {
+		    		return false;
+		    	}
+		    }
+		}
+		KeyboardFocusManager manager =
+		         KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		manager.addKeyEventDispatcher(new KeyDispatcher());
 		
-		// Youdao
-		JScrollPane youdaoScrollPane = new JScrollPane();
-		youdaoResultTextArea = new JTextArea();
-		youdaoResultTextArea.setText("");
-		youdaoResultTextArea.setLineWrap(true);
-		youdaoScrollPane.getViewport().add(youdaoResultTextArea);
-		
-		// Online BNC
-		JScrollPane bncScrollPane = new JScrollPane();
-		onlineBncResultTextArea = new JTextArea();
-		onlineBncResultTextArea.setText("");
-		onlineBncResultTextArea.setLineWrap(true);
-		bncScrollPane.getViewport().add(onlineBncResultTextArea);
-
-		// add panes to tabbed pane
-		resultPane.add("Youdao", youdaoScrollPane);
-		resultPane.add("BNC", bncScrollPane);
+		// result scroll pane
+		JScrollPane resultScrollPane = new JScrollPane();
+		resultTextArea = new JTextArea();
+		resultTextArea.setText("");
+		resultTextArea.setLineWrap(true);
+		resultScrollPane.getViewport().add(resultTextArea);
+		resultScrollPane.setBounds(10, 80, getWidth()-20, 350);
+		getContentPane().add(resultScrollPane);
 		
 	}
-
+	
+	public void appendResult(String result) {
+		synchronized (object) {
+			int currentPosition = resultTextArea.getCaretPosition();
+			String oldValue = resultTextArea.getText();
+			resultTextArea.setText(oldValue + result); 
+			resultTextArea.setCaretPosition(currentPosition);
+		}
+	}
+	
 	public String getWordToSearch() {
 		return searchTextField.getText();
 	}
 	
-	public JTextArea getYoudaoArea() {
-		return youdaoResultTextArea;
-	}
-	
-	public JTextArea getBncArea() {
-		return onlineBncResultTextArea;
+	public JTextArea getResultArea() {
+		return resultTextArea;
 	}
 	
 	public JButton getPlayButton() {
-		return audioButton;
+		return playButton;
 	}
-	
-	public void setResultArea(JTextArea area, SearchResult result) {
-		if (result.hasResult() == true) {
-			area.setForeground(Color.BLACK);
-			area.setText(result.getContent());
-		} else {
-			area.setForeground(Color.RED);
-			area.setText(result.getContent());
-		}
-	}
-	
 }

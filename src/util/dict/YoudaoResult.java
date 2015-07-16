@@ -1,4 +1,4 @@
-package util.youdao;
+package util.dict;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 

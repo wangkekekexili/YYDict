@@ -1,4 +1,4 @@
-package util.bnc;
+package util.dict;
 
 import java.io.IOException;
 import java.util.regex.Pattern;

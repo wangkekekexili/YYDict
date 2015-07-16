@@ -12,25 +12,18 @@ import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.SamplePlayer;
 import util.Resources;
 import util.SearchResult;
-import util.bnc.OnlineBnc;
-import util.cache.Cache;
-import util.cache.InMemoryHashMapCache;
-import util.cache.OnDiskMapdbCache;
-import util.webster.WebsterHelper;
-import util.youdao.YoudaoDictionary;
+import util.dict.Bing;
+import util.dict.WebsterHelper;
+import util.dict.Youdao;
 
 public class Controller implements ActionListener {
 
 	private SimpleGui frame;
-	private Cache inMemoryCache;
-	private Cache onDiskCache;
 	
 	private String audioFileName = null;
 	
 	public Controller(SimpleGui frame) {
 		this.frame = frame;
-		inMemoryCache = new InMemoryHashMapCache();
-		onDiskCache = new OnDiskMapdbCache();
 	}
 	
 	@Override
@@ -47,43 +40,15 @@ public class Controller implements ActionListener {
 	}
 	
 	private void search() {
-		class YoudaoThread extends Thread {
-			private SearchResult result = new SearchResult(
-					false, "Search thread error.");
-			@Override
-			public void run() {
-				String wordToSearch = frame.getWordToSearch();
-				if (inMemoryCache.get(wordToSearch) != null) {
-					result = new SearchResult(true, 
-							inMemoryCache.get(wordToSearch));
-				} else if (onDiskCache.get(wordToSearch) != null) {
-					result = new SearchResult(true, 
-							onDiskCache.get(wordToSearch));
-					inMemoryCache.put(wordToSearch, result.getContent());
-				} else {
-					result = YoudaoDictionary.search(wordToSearch);
-					if (result.hasResult() == true) {
-						inMemoryCache.put(wordToSearch, result.getContent());
-						onDiskCache.put(wordToSearch, result.getContent());
-					}
-				}
-			}
-			
-			public SearchResult getSearchResult() {
-				return result;
-			}
-		}
 		
-		class BNCThread extends Thread {
-			private SearchResult result = new SearchResult(
-					false, "Search thread error.");
+		class YoudaoThread extends Thread {
 			@Override
 			public void run() {
-				String wordTOSearch = frame.getWordToSearch();
-				result = OnlineBnc.search(wordTOSearch);
-			}
-			public SearchResult getSearchResult() {
-				return result;
+				String word = frame.getWordToSearch();
+				SearchResult result = Youdao.search(word);
+				if (result.hasResult()) {
+					frame.appendResult(result.getContent());
+				}
 			}
 		}
 		
@@ -93,43 +58,39 @@ public class Controller implements ActionListener {
 				String wordToSearch = frame.getWordToSearch();
 				String audioFileName = WebsterHelper.getAudio(wordToSearch);
 				Controller.this.audioFileName = audioFileName;
+				if (audioFileName == null) {
+					frame.getPlayButton().setVisible(false);
+				} else {
+					frame.getPlayButton().setVisible(true);
+				}
 			}
 		}
 		
-		YoudaoThread youdaoThread = new YoudaoThread();
-		BNCThread bncThread = new BNCThread();
-		WebsterThread websterThread = new WebsterThread();
-		
-		youdaoThread.start();
-		bncThread.start();
-		websterThread.start();
-		
-		try {
-			youdaoThread.join();
-			bncThread.join();
-			websterThread.join();
-		} catch (Exception e1) {
-			youdaoThread.interrupt();
-			bncThread.interrupt();
-			websterThread.interrupt();
+		class BingThread extends Thread {
+			@Override
+			public void run() {
+				SearchResult result = Bing.search(frame.getWordToSearch());
+				if (result.hasResult()) {
+					frame.appendResult(result.getContent());
+				}
+			}
 		}
 		
-		frame.setResultArea(frame.getYoudaoArea(),
-				youdaoThread.getSearchResult());
-		frame.getYoudaoArea().setCaretPosition(0);
+		frame.getResultArea().setText("");
 		
-		frame.setResultArea(frame.getBncArea(), 
-				bncThread.getSearchResult());
-		frame.getBncArea().setCaretPosition(0);
+		Thread[] threadPool = {
+				new YoudaoThread(),
+				new WebsterThread(),
+				new BingThread()
+		};
 		
-		// get audio
-		if (audioFileName == null) {
-			frame.getPlayButton().setVisible(false);
-		} else {
-			frame.getPlayButton().setVisible(true);
+		for (Thread thread : threadPool) {
+			thread.start();
 		}
+		
 	}
 	
+	// play audio
 	private void play() {
 		if (audioFileName == null) {
 			frame.getPlayButton().setVisible(false);
