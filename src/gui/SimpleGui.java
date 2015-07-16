@@ -92,6 +92,7 @@ public class SimpleGui extends JFrame {
 		resultTextArea = new JTextArea();
 		resultTextArea.setText("");
 		resultTextArea.setLineWrap(true);
+		resultTextArea.setWrapStyleWord(true);
 		resultScrollPane.getViewport().add(resultTextArea);
 		resultScrollPane.setBounds(10, 80, getWidth()-20, 350);
 		getContentPane().add(resultScrollPane);
