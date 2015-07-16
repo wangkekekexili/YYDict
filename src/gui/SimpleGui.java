@@ -38,6 +38,7 @@ public class SimpleGui extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setSize(320, 480);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		
 		// search field
