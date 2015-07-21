@@ -1,5 +1,7 @@
 package util.dict;
 
+import java.net.URLEncoder;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,9 +14,10 @@ public class Bing {
 		word = word.trim().replaceAll(" ", "+");
 		try {
 			Document document = Jsoup
-					.connect("http://cn.bing.com/dict/problem?q="+ word +"")
+					.connect("http://cn.bing.com/dict/problem?q=" + URLEncoder.encode(word, "utf-8"))
 					.get();
-			Element ul = document.getElementsByClass("qdef").get(0).getElementsByTag("ul").get(0);
+			Element ul = document.getElementsByClass("qdef")
+					.get(0).getElementsByTag("ul").get(0);
 			
 			StringBuilder simpleDefinition = new StringBuilder();
 			simpleDefinition.append("Bing\n");
