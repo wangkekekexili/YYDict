@@ -4,8 +4,9 @@ import java.awt.Image;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -33,6 +34,10 @@ public class SimpleGui extends JFrame {
 		
 		Controller listener = new Controller(this);
 		
+		// Get default Locale for setting label and button texts.
+		Locale locale = Locale.getDefault();
+		ResourceBundle bundle = ResourceBundle.getBundle("gui/gui", locale);
+		
 		// Set up this JFrame
 		setTitle("YY Dict");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -51,11 +56,11 @@ public class SimpleGui extends JFrame {
 		// audio button
 		playButton = new JButton();
 		try {
-			Image playAudioImage = ImageIO.read(
-					new File(Resources.PLAY_BUTTON_IMAGE_FILE));
+			Image playAudioImage = ImageIO.read(getClass().getResource(
+						Resources.PLAY_BUTTON_IMAGE_RESOURCE));
 			playButton.setIcon(new ImageIcon(playAudioImage));
 		} catch (IOException e) {
-			playButton.setText("play");
+			playButton.setText(bundle.getString("play"));
 		}
 		playButton.setBounds(285, 10, 20, 20);
 		playButton.setBorder(BorderFactory.createEmptyBorder());
@@ -65,7 +70,7 @@ public class SimpleGui extends JFrame {
 		playButton.addActionListener(listener);
 		
 		// search button
-		searchButton = new JButton("Search");
+		searchButton = new JButton(bundle.getString("search"));
 		searchButton.addActionListener(listener);
 		searchButton.setBounds(60, 40, getWidth()-120, 30);
 		searchButton.setActionCommand("search");
