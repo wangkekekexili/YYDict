@@ -41,7 +41,7 @@ public class Bnc {
 			return new SearchResult(false, e.getMessage());
 		}
 		
-		if (solutions.size() == 0) {
+		if (solutions.size() <= 1) {
 			return new SearchResult(false, "");
 		}
 
