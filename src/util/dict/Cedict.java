@@ -1,11 +1,8 @@
 package util.dict;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.FileUtils;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -33,31 +30,30 @@ public class Cedict {
 			pinyin = PinyinHelper
 					.toHanyuPinyinStringArray(firstChar, format)[0];
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new SearchResult(false, "");
 		}
 		
-		File file = Resources.getCedictDatabaseFile(pinyin);
-		List<String> lines = null;
-		try {
-			lines =FileUtils.readLines(file);
-		} catch (IOException e) {
-			return new SearchResult(false, "");
-		}
-
-		for (String line : lines) {
-			if (line.startsWith(word + "\t")) {
-				StringBuilder resultBuilder = new StringBuilder();
-				resultBuilder.append("Cedict\n");
-				String[] item = line.split(Pattern.quote("\t"));
-				for (int i = 1;i != item.length;i++) {
-					resultBuilder.append(Integer.toString(i))
-							.append(": ")
-							.append(item[i])
-							.append("\n");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				Resources.getCedictInputStream(pinyin)))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				if (line.startsWith(word + "\t")) {
+					StringBuilder resultBuilder = new StringBuilder();
+					resultBuilder.append("Cedict\n");
+					String[] item = line.split(Pattern.quote("\t"));
+					for (int i = 1;i != item.length;i++) {
+						resultBuilder.append(Integer.toString(i))
+								.append(": ")
+								.append(item[i])
+								.append("\n");
+					}
+					resultBuilder.append("\n\n");
+					return new SearchResult(true, resultBuilder.toString());
 				}
-				resultBuilder.append("\n\n");
-				return new SearchResult(true, resultBuilder.toString());
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return new SearchResult(false, "");

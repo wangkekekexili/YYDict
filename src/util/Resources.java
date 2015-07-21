@@ -1,6 +1,7 @@
 package util;
 
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * Manage resource location.
@@ -33,8 +34,8 @@ public class Resources {
 		return AUDIO_ROOT_DIRECTORY + File.separator + audioName;
 	}
 	
-	public static final File getCedictDatabaseFile(String pinyin) {
-		return new File(Resources.class.getResource(
-				CEDICT_DICTIONARY_ROOT + File.separator + pinyin).getFile());
+	public static final InputStream getCedictInputStream(String pinyin) {
+		return Resources.class.getResourceAsStream(
+				CEDICT_DICTIONARY_ROOT + File.separator + pinyin);
 	}
 }
