@@ -21,5 +21,6 @@
 	<classpathentry kind="lib" path="lib/beads/tools.jar"/>
 	<classpathentry kind="lib" path="lib/beads/tritonus_aos-0.3.6.jar"/>
 	<classpathentry kind="lib" path="lib/beads/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="lib/pinyin4j-2.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
