@@ -19,7 +19,10 @@ public class Resources {
 			RESOURCE_ROOT_DIRECTORY + File.separator + "audio";
 	
 	public static final String PLAY_BUTTON_IMAGE_RESOURCE = 
-			"/image/play.png";
+			File.separator + "image" + File.separator + "play.png";
+	
+	public static final String CEDICT_DICTIONARY_ROOT = 
+			File.separator + "database" + File.separator + "cedict";
 	
 	// Unique identifier for each API party.
 	public static final String YOUDAO = "youdao";
@@ -28,5 +31,10 @@ public class Resources {
 	
 	public static final String getAudioLocation(String audioName) {
 		return AUDIO_ROOT_DIRECTORY + File.separator + audioName;
+	}
+	
+	public static final File getCedictDatabaseFile(String pinyin) {
+		return new File(Resources.class.getResource(
+				CEDICT_DICTIONARY_ROOT + File.separator + pinyin).getFile());
 	}
 }

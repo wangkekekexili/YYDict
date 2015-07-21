@@ -14,6 +14,7 @@ import util.Resources;
 import util.SearchResult;
 import util.dict.Bing;
 import util.dict.Bnc;
+import util.dict.Cedict;
 import util.dict.MerriamWebster;
 import util.dict.Stands4;
 import util.dict.Youdao;
@@ -115,6 +116,16 @@ public class Controller implements ActionListener {
 			}
 		}
 		
+		class CedictThread extends Thread {
+			@Override
+			public void run() {
+				SearchResult result = Cedict.search(frame.getWordToSearch());
+				if (result.hasResult()) {
+					frame.appendResult(result.getContent());
+				}
+			}
+		}
+		
 		frame.getResultArea().setText("");
 		
 		Thread[] threadPool = {
@@ -122,7 +133,8 @@ public class Controller implements ActionListener {
 				new WebsterThread(),
 				new BingThread(),
 				new Stands4AbbrThread(),
-				new BncThread()
+				new BncThread(),
+				new CedictThread()
 		};
 		
 		for (Thread thread : threadPool) {
