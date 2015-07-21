@@ -22,6 +22,7 @@ public class Controller implements ActionListener {
 
 	private SimpleGui frame;
 	
+	private String lastItemToSearch = null;
 	private String audioFileName = null;
 	
 	public Controller(SimpleGui frame) {
@@ -32,12 +33,24 @@ public class Controller implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "search":
-			search();
+			if (needToSearch(frame.getWordToSearch())) {
+				search();
+			}
 			break;
 		case "play":
 			play();
 			break;
 		default:
+		}
+	}
+	
+	private boolean needToSearch(String item) {
+		if (lastItemToSearch == null || 
+				lastItemToSearch.equals(item) == false) {
+			lastItemToSearch = item;
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
