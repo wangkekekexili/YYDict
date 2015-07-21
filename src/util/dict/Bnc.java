@@ -40,6 +40,10 @@ public class Bnc {
 		} catch (NullPointerException e) {
 			return new SearchResult(false, e.getMessage());
 		}
+		
+		if (solutions.size() == 0) {
+			return new SearchResult(false, "");
+		}
 
 		StringBuilder result = new StringBuilder();
 		result.append("BNC example\n");
