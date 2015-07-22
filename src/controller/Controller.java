@@ -4,6 +4,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import gui.SimpleGui;
 import net.beadsproject.beads.core.AudioContext;
@@ -21,9 +23,79 @@ import util.dict.Youdao;
 
 public class Controller implements ActionListener {
 
+	class YoudaoThread extends Thread {
+		@Override
+		public void run() {
+			String word = frame.getWordToSearch();
+			SearchResult result = Youdao.search(word);
+			if (result.hasResult()) {
+				frame.appendResult(result.getContent());
+			}
+		}
+	}
+	
+	class WebsterThread extends Thread {
+		@Override
+		public void run() {
+			String wordToSearch = frame.getWordToSearch();
+			SearchResult result = MerriamWebster.search(wordToSearch);
+			audioFileName = result.getAudioFileName();
+			if (audioFileName == null) {
+				frame.getPlayButton().setVisible(false);
+			} else {
+				frame.getPlayButton().setVisible(true);
+			}
+			if (result.hasResult()) {
+				frame.appendResult(result.getContent());
+			}
+		}
+	}
+	
+	class BingThread extends Thread {
+		@Override
+		public void run() {
+			SearchResult result = Bing.search(frame.getWordToSearch());
+			if (result.hasResult()) {
+				frame.appendResult(result.getContent());
+			}
+		}
+	}
+	
+	class Stands4AbbrThread extends Thread {
+		@Override
+		public void run() {
+			SearchResult result = Stands4
+					.searchAbbr(frame.getWordToSearch());
+			if (result.hasResult()) {
+				frame.appendResult(result.getContent());
+			}
+		}
+	}
+	
+	class BncThread extends Thread {
+		@Override
+		public void run() {
+			SearchResult result = Bnc.search(frame.getWordToSearch());
+			if (result.hasResult()) {
+				frame.appendResult(result.getContent());
+			}
+		}
+	}
+	
+	class CedictThread extends Thread {
+		@Override
+		public void run() {
+			SearchResult result = Cedict.search(frame.getWordToSearch());
+			if (result.hasResult()) {
+				frame.appendResult(result.getContent());
+			}
+		}
+	}
+	
 	private SimpleGui frame;
 	
-	private String lastItemToSearch = null;
+	private String lastSearchedWord = null;
+	private Set<Thread> lastUsedThreads = new HashSet<>();
 	private String audioFileName = null;
 	
 	public Controller(SimpleGui frame) {
@@ -46,9 +118,9 @@ public class Controller implements ActionListener {
 	}
 	
 	private boolean needToSearch(String item) {
-		if (lastItemToSearch == null || 
-				lastItemToSearch.equals(item) == false) {
-			lastItemToSearch = item;
+		if (lastSearchedWord == null || 
+				lastSearchedWord.equals(item) == false) {
+			lastSearchedWord = item;
 			return true;
 		} else {
 			return false;
@@ -56,78 +128,10 @@ public class Controller implements ActionListener {
 	}
 	
 	private void search() {
-		
-		class YoudaoThread extends Thread {
-			@Override
-			public void run() {
-				String word = frame.getWordToSearch();
-				SearchResult result = Youdao.search(word);
-				if (result.hasResult()) {
-					frame.appendResult(result.getContent());
-				}
-			}
+		for (Thread thread : lastUsedThreads) {
+			thread.interrupt();
 		}
-		
-		class WebsterThread extends Thread {
-			@Override
-			public void run() {
-				String wordToSearch = frame.getWordToSearch();
-				SearchResult result = MerriamWebster.search(wordToSearch);
-				audioFileName = result.getAudioFileName();
-				if (audioFileName == null) {
-					frame.getPlayButton().setVisible(false);
-				} else {
-					frame.getPlayButton().setVisible(true);
-				}
-				if (result.hasResult()) {
-					frame.appendResult(result.getContent());
-				}
-			}
-		}
-		
-		class BingThread extends Thread {
-			@Override
-			public void run() {
-				SearchResult result = Bing.search(frame.getWordToSearch());
-				if (result.hasResult()) {
-					frame.appendResult(result.getContent());
-				}
-			}
-		}
-		
-		class Stands4AbbrThread extends Thread {
-			@Override
-			public void run() {
-				SearchResult result = Stands4
-						.searchAbbr(frame.getWordToSearch());
-				if (result.hasResult()) {
-					frame.appendResult(result.getContent());
-				}
-			}
-		}
-		
-		class BncThread extends Thread {
-			@Override
-			public void run() {
-				SearchResult result = Bnc.search(frame.getWordToSearch());
-				if (result.hasResult()) {
-					frame.appendResult(result.getContent());
-				}
-			}
-		}
-		
-		class CedictThread extends Thread {
-			@Override
-			public void run() {
-				SearchResult result = Cedict.search(frame.getWordToSearch());
-				if (result.hasResult()) {
-					frame.appendResult(result.getContent());
-				}
-			}
-		}
-		
-		frame.getResultArea().setText("");
-		
+		lastUsedThreads.clear();
 		Thread[] threadPool = {
 				new YoudaoThread(),
 				new WebsterThread(),
@@ -136,11 +140,16 @@ public class Controller implements ActionListener {
 				new BncThread(),
 				new CedictThread()
 		};
-		
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		frame.getResultArea().setText("");
 		for (Thread thread : threadPool) {
 			thread.start();
+			lastUsedThreads.add(thread);
 		}
-		
 	}
 	
 	// play audio

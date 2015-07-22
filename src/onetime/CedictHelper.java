@@ -25,10 +25,10 @@ public class CedictHelper {
 	@SuppressWarnings("unused")
 	private static void extractContent() throws Exception {
 		URL cedictPath = CedictHelper.class.getClass()
-				.getResource("/onetime/cedict_origin");
+				.getResource("data/cedict_origin");
 		
 		BufferedWriter bw = new BufferedWriter(
-				new FileWriter(new File("src/onetime/cedict")));
+				new FileWriter(new File("data/cedict")));
 		
 		BufferedReader br = new BufferedReader(
 				new InputStreamReader(cedictPath.openStream()));
@@ -66,7 +66,7 @@ public class CedictHelper {
 		format.setVCharType(HanyuPinyinVCharType.WITH_V);
 		format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
 		
-		File file = new File("src/onetime/cedict");
+		File file = new File("data/cedict");
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = null;
 		while ((line = br.readLine()) != null) {

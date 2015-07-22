@@ -30,7 +30,6 @@ public class Cedict {
 			pinyin = PinyinHelper
 					.toHanyuPinyinStringArray(firstChar, format)[0];
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new SearchResult(false, "");
 		}
 		
