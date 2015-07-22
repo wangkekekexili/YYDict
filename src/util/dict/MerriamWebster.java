@@ -90,7 +90,7 @@ public class MerriamWebster {
 						true, exampleSentencesBuilder.toString(), wavFileName);
 			}
 		} catch (Exception e) {
-			return null;
 		}
+		return new SearchResult(false, "");
 	}
 }
