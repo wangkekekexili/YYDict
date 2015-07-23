@@ -79,7 +79,7 @@ public class MerriamWebster {
 				
 				// download audio
 				FileUtils.copyURLToFile(new URL(wavUrl), 
-						new File(Resources.getAudioLocation(wavFileName)));
+						new File(Resources.getAudioLocationToSave(wavFileName)));
 			} catch (Exception e) {}
 			
 			if (numberOfExamples == 0) {

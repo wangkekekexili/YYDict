@@ -173,7 +173,7 @@ public class Controller implements ActionListener {
 			}));
 			
 			AudioContext context = new AudioContext();
-			String file = Resources.getAudioLocation(audioFileName);
+			String file = Resources.getAudioLocationToSave(audioFileName);
 			SamplePlayer player = new SamplePlayer(context, 
 					SampleManager.sample(file));
 			Gain g = new Gain(context, 2, 0.2f);

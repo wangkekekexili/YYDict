@@ -11,6 +11,9 @@ import java.io.InputStream;
  */
 public class Resources {
 	
+	public static final String HOME_DIRECTORY = 
+			System.getProperty("user.home");
+	
 	public static final String RESOURCE_ROOT_DIRECTORY = "yydict";
 	
 	public static final String ON_DISK_CACHE_FILE = 
@@ -30,7 +33,7 @@ public class Resources {
 	public static final String BNC = "bnc";
 	public static final String Merriam_Webster = "webster";
 	
-	public static final String getAudioLocation(String audioName) {
+	public static final String getAudioLocationToSave(String audioName) {
 		return AUDIO_ROOT_DIRECTORY + File.separator + audioName;
 	}
 	
