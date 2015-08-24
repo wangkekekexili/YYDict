@@ -14,7 +14,7 @@ public class Bing {
 		word = word.trim().replaceAll(" ", "+");
 		try {
 			Document document = Jsoup
-					.connect("http://cn.bing.com/dict/problem?q=" + URLEncoder.encode(word, "utf-8"))
+					.connect("http://cn.bing.com/dict/dict?q=" + word)
 					.get();
 			Element ul = document.getElementsByClass("qdef")
 					.get(0).getElementsByTag("ul").get(0);
