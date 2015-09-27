@@ -10,3 +10,11 @@ I make use of the following APIs and websites.
 * Bing: English Chinese dictionary and examples
 * STANDS4: sentence examples and abbreviations
 * CC-Cedict: Chinese English dictionary
+
+
+## TODO List
+
+* toggle when there is no content
+* suggest related words
+* save history
+* organize all sources
